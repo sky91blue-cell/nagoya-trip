@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>삼대모녀 나고야 가족여행 ✈️</title>
+    
+    <!-- PWA 및 모바일 홈 화면 설치용 메타 태그 -->
+    <meta name="theme-color" content="#FF6B00">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3180/3180214.png">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3180/3180214.png">
+    <!-- 앱 설정 파일 (Manifest) -->
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIuuCmOqzoOyVvCDqsIDsobHsl6zthakiLAogICJzaG9ydF9uYW1lIjogIuuCmOqzoOyVvOuytO2FqSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjRkFGN0YyIiwKICAidGhlbWVfY29sb3ciOiAiI0ZGNkIwMCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImh0dHBzOi8vY2RuLWljb25zLXBuZy5mbGF0aWNvbi5jb20vNTEyLzMxODAvMzE4MDIxNC5wbmciLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0KICBdCn0=">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans KR for clean typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#FAF7F2',     // Light beige
+                            card: '#FFFFFF',
+                            primary: '#FF6B00', // 쨍하고 선명한 오렌지 (수정)
+                            primaryLight: '#FFF0E6',
+                            text: '#222222',    // 훨씬 진해진 텍스트 (수정)
+                            lightText: '#555555' // 가독성 높인 보조 텍스트 (수정)
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f0ece6;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Mobile app container styling */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #FAF7F2;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        /* Hide scrollbar for horizontal scroll areas */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* 타임라인 스타일 (주황색 점과 선) 복구 */
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 5px;
+            bottom: 0;
+            width: 2px;
+            background-color: #ffedd5; /* 연한 주황색 선 */
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -25px; /* pl-10(40px) 여백 안에서 선 위치(15px)에 정확히 맞춤 */
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #FF6B00; /* 쨍한 주황색 점 */
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 0 2px #ffedd5;
+            z-index: 10;
+        }
+
+        /* 상단 및 서브 탭 스타일 */
+        .top-tab-btn {
+            transition: all 0.3s ease;
+        }
+        .top-tab-btn.active {
+            color: #FF6B00;
+            border-bottom-color: #FF6B00;
+        }
+        .day-tab-btn {
+            transition: all 0.2s ease;
+        }
+        .day-tab-btn.active {
+            background-color: #FF6B00;
+            color: white;
+            font-weight: 700;
+            border-color: #FF6B00;
+            box-shadow: 0 2px 4px rgba(255, 107, 0, 0.3);
+        }
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 6px;
+            padding: 4px 8px;
+            background-color: #f3f4f6;
+            color: #4b5563;
+            font-size: 11px;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            text-decoration: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .map-btn:hover {
+            background-color: #e5e7eb;
+        }
+        .blog-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background-color: #e6f4ea;
+            color: #166534;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 6px;
+            border: 1px solid #bbf7d0;
+            text-decoration: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .blog-btn:hover {
+            background-color: #bce3c6;
+        }
+    </style>
+</head>
+<body class="text-brand-text font-sans">
+
+    <div class="app-container flex flex-col">
+        <!-- Header -->
+        <header class="bg-white px-5 pt-12 pb-4 shadow-sm sticky top-0 z-50">
+            <div class="flex justify-between items-start relative">
+                <div class="flex-1">
+                    <h1 class="text-xl font-bold text-center text-brand-text mb-1">삼대모녀 나고야 가족여행 ✈️</h1>
+                    <p class="text-center text-sm text-brand-lightText">2026. 11. 13 - 11. 17 (4박 5일)</p>
+                </div>
+            </div>
+            
+            <!-- Top Tab Navigation -->
+            <nav class="mt-4 flex border-b border-gray-100">
+                <button onclick="switchTopTab('info')" class="top-tab-btn flex-1 active py-2 text-sm text-center text-brand-lightText font-bold border-b-2 border-transparent" id="btn-top-info">기본정보</button>
+                <button onclick="switchTopTab('schedule')" class="top-tab-btn flex-1 py-2 text-sm text-center text-brand-lightText font-bold border-b-2 border-transparent" id="btn-top-schedule">일정</button>
+            </nav>
+
+            <!-- Sub Tab Navigation (Hidden initially) -->
+            <nav id="sub-nav-schedule" class="mt-3 grid grid-cols-5 gap-1 hidden px-1 w-full">
+                <button onclick="switchDayTab('tab-day1')" class="day-tab-btn active w-full py-1.5 text-[13px] sm:text-sm text-brand-lightText font-medium rounded-full border border-gray-200" id="btn-tab-day1">1일차</button>
+                <button onclick="switchDayTab('tab-day2')" class="day-tab-btn w-full py-1.5 text-[13px] sm:text-sm text-brand-lightText font-medium rounded-full border border-gray-200" id="btn-tab-day2">2일차</button>
+                <button onclick="switchDayTab('tab-day3')" class="day-tab-btn w-full py-1.5 text-[13px] sm:text-sm text-brand-lightText font-medium rounded-full border border-gray-200" id="btn-tab-day3">3일차</button>
+                <button onclick="switchDayTab('tab-day4')" class="day-tab-btn w-full py-1.5 text-[13px] sm:text-sm text-brand-lightText font-medium rounded-full border border-gray-200" id="btn-tab-day4">4일차</button>
+                <button onclick="switchDayTab('tab-day5')" class="day-tab-btn w-full py-1.5 text-[13px] sm:text-sm text-brand-lightText font-medium rounded-full border border-gray-200" id="btn-tab-day5">5일차</button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 p-5 overflow-y-auto pb-20">
+            
+            <!-- [기본정보] -->
+            <section id="tab-info" class="tab-content">
+                <h2 class="text-lg font-bold mb-4 flex items-center"><span class="mr-2">🎫</span> 기본 정보</h2>
+                
+                <!-- Flight Info -->
+                <div class="bg-white rounded-2xl p-5 mb-5 shadow-sm border border-brand-primaryLight">
+                    <h3 class="font-bold text-brand-primary mb-3 flex items-center"><span class="text-xl mr-2">✈️</span> 항공권</h3>
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-xs text-brand-lightText mb-1 flex justify-between"><span>출국 (11/13 금)</span> <span class="font-bold text-brand-primary">OZ122</span></p>
+                            <p class="font-medium">인천공항 08:00 <span class="text-gray-400 mx-1">→</span> 주부공항 09:55</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-xs text-brand-lightText mb-1 flex justify-between"><span>입국 (11/17 화)</span> <span class="font-bold text-brand-primary">OZ123</span></p>
+                            <p class="font-medium">주부공항 18:20 <span class="text-gray-400 mx-1">→</span> 인천공항 20:30</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel Info -->
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-brand-primaryLight">
+                    <h3 class="font-bold text-brand-primary mb-3 flex items-center"><span class="text-xl mr-2">🏨</span> 숙소</h3>
+                    <div class="space-y-3">
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-xs text-brand-lightText mb-1">1~2일차 (11/13 ~ 11/15)</p>
+                            <div class="flex items-center justify-between">
+                                <p class="font-medium">나고야 JR 게이트 타워 호텔</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Nagoya+JR+Gate+Tower+Hotel" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">📍 나고야역 (이동 최고 스팟)</p>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-3">
+                            <p class="text-xs text-brand-lightText mb-1">3~4일차 (11/15 ~ 11/17)</p>
+                            <div class="flex items-center justify-between">
+                                <p class="font-medium">게로 로얄 호텔 미야비테이</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Gero+Royal+Hotel+Miyabitei" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">📍 게로 온천 (다다미방, 온천 힐링)</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- [1일차] -->
+            <section id="tab-day1" class="tab-content hidden">
+                <div class="flex justify-between items-end mb-5">
+                    <h2 class="text-lg font-bold">11월 13일 (금)</h2>
+                    <span class="text-sm bg-brand-primaryLight text-brand-primary px-3 py-1 rounded-full font-medium">1일차</span>
+                </div>
+                
+                <div class="relative pl-10">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚆 기차 이동</span>
+                        <h3 class="font-bold text-base">주부공항 → 나고야역</h3>
+                        <p class="text-sm text-brand-lightText mt-1">주부공항 도착 후 시내로 이동</p>
+                        <a href="https://blog.naver.com/w_namu/224384985583" target="_blank" class="blog-btn">🔗 주부공항에서 나고야 가는 방법</a>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚕 택시/짐보관</span>
+                        <h3 class="font-bold text-base">호텔 짐 보관 & 점심식사</h3>
+                        <p class="text-sm text-brand-lightText mt-1">호텔에 짐 맡긴 후 JR 게이트 타워 내 식당가 이동</p>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 flex justify-between items-center">
+                            <p class="text-sm font-medium">🍽️ Konan JR Central Towers Shop</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Konan+JR+Central+Towers+Shop" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚕 택시 이동</span>
+                        <h3 class="font-bold text-base">나고야성 관광</h3>
+                        <p class="text-sm text-brand-lightText mt-1">어머니와 아이를 위해 택시로 편하게 이동. 메이조 공원에서 천수각 구경.</p>
+                        <div class="flex gap-2 mt-2">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Nagoya+Castle" target="_blank" class="map-btn ml-0">📍 나고야성</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Meijo+Park" target="_blank" class="map-btn ml-0">📍 메이조 공원</a>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚕 택시 이동</span>
+                        <h3 class="font-bold text-base">노리타케숲 & 이온몰</h3>
+                        <p class="text-sm text-brand-lightText mt-1">예쁜 그릇 구경 및 이온몰 내 츠타야 서점 구경</p>
+                        <div class="flex gap-2 mt-2 flex-wrap">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Noritake+Garden" target="_blank" class="map-btn ml-0 mb-1">📍 노리타케숲</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Aeon+Mall+Nagoya+Noritake+Garden" target="_blank" class="map-btn ml-0 mb-1">📍 이온몰</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Tsutaya+Books+Nagoya+Noritake" target="_blank" class="map-btn ml-0 mb-1">📍 츠타야 서점</a>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🍰 달콤한 휴식</span>
+                        <h3 class="font-bold text-base">야식 디저트 포장</h3>
+                        <p class="text-sm text-brand-lightText mt-1">숙소 복귀 길에 하브스(HARBS) 케이크 포장</p>
+                        <div class="flex justify-between items-center mt-1">
+                            <p class="text-xs text-gray-500">📍 JR東海高島屋 테이크아웃 샵</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=HARBS+JR東海高島屋テイクアウトショップ" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- [2일차] -->
+            <section id="tab-day2" class="tab-content hidden">
+                <div class="flex justify-between items-end mb-5">
+                    <h2 class="text-lg font-bold">11월 14일 (토)</h2>
+                    <span class="text-sm bg-brand-primaryLight text-brand-primary px-3 py-1 rounded-full font-medium">2일차</span>
+                </div>
+                
+                <div class="relative pl-10">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">아침 식사 (08:00 오픈런)</h3>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 flex justify-between items-center">
+                            <p class="text-sm font-medium">🍞 Tsubame Bread & Milk 명역점</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Tsubame+Bread+%26+Milk+Meieki" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚇 지하철 이동</span>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-base">나고야항 수족관 🐬</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Port+of+Nagoya+Public+Aquarium" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                        <p class="text-sm text-brand-lightText mt-1">아이가 좋아하는 해양 동물 관람</p>
+                        <div class="bg-sky-50 p-2 rounded mt-2 border border-sky-100">
+                            <p class="text-xs text-sky-800 font-bold">⏰ 필수 관람 시간</p>
+                            <p class="text-xs text-sky-700">- 10:30 돌고래 퍼포먼스<br>- 11:30 범고래 훈련</p>
+                        </div>
+                        <a href="https://blog.naver.com/sumsumlife_/224424771050" target="_blank" class="blog-btn">🔗 도니치 에코 킷푸 티켓 사는 방법</a>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">점심 식사</h3>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 1.</span> kanahan (된장우동/돈까스)</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=kanahan+nagoya" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 2.</span> 인도요리 듀루가 나고야항점 (커리)</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=インド料理ドルーガ+名古屋港店" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 3.</span> Rin (중국집/볶음밥)</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=Rin+nagoya+port" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-base">도쿠가와엔 관광</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Tokugawaen" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                        <p class="text-sm text-brand-lightText mt-1">아름다운 일본식 정원 산책</p>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">저녁 식사</h3>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 1.</span> 쿠로부타야 라무치</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=쿠로부타야+라무치+나고야" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 2.</span> 토리카이 총본가 사카에 라식점</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=토리카이+총본가+사카에+라シック" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">야경 감상 🌃</h3>
+                        <p class="text-sm text-brand-lightText mt-1">오아시스 21, 미라이타워 주변 야경 관광</p>
+                        <div class="flex gap-2 mt-2">
+                            <a href="https://www.google.com/maps/search/?api=1&query=Oasis+21" target="_blank" class="map-btn ml-0">📍 오아시스 21</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Chubu+Electric+Power+Mirai+Tower" target="_blank" class="map-btn ml-0">📍 미라이타워</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- [3일차] -->
+            <section id="tab-day3" class="tab-content hidden">
+                <div class="flex justify-between items-end mb-5">
+                    <h2 class="text-lg font-bold">11월 15일 (일)</h2>
+                    <span class="text-sm bg-brand-primaryLight text-brand-primary px-3 py-1 rounded-full font-medium">3일차</span>
+                </div>
+                
+                <div class="relative pl-10">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">아침 식사 (09:00 오픈런)</h3>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 flex justify-between items-center">
+                            <p class="text-sm font-medium">🍳 伏見町POPEYE</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=伏見町POPEYE" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚆 기차 이동</span>
+                        <h3 class="font-bold text-base">게로 온천으로 이동 ♨️</h3>
+                        <p class="text-sm text-brand-lightText mt-1">나고야역 10:48 출발 → 게로역 12:27 도착</p>
+
+                        <!-- 기차표 예약정보 (나고야 -> 게로) -->
+                        <div class="mt-3 bg-white border border-blue-200 rounded-lg p-3 shadow-sm relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2 mb-2 ml-2">
+                                <span class="text-xs font-bold text-gray-700">예약번호 <span class="text-blue-600">41817</span></span>
+                                <span class="text-xs text-gray-500">어른 2명, 어린이 1명</span>
+                            </div>
+                            <div class="flex justify-between items-center ml-2">
+                                <div>
+                                    <p class="font-bold text-gray-800 text-sm">Hida 7 <span class="text-xs font-normal text-gray-500 bg-gray-100 px-1 py-0.5 rounded ml-1">보통차지정석</span></p>
+                                    <p class="text-sm text-blue-700 font-bold mt-1">3호차 <span class="text-gray-600 text-xs font-normal">10A, 11A, 11B</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚕 택시 이동</span>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-base">숙소 짐 보관</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Gero+Royal+Hotel+Miyabitei" target="_blank" class="map-btn">📍 숙소 지도</a>
+                        </div>
+                        <p class="text-sm text-brand-lightText mt-1">게로 로얄 호텔 미야비테이 짐 맡기기</p>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚌 버스 이동</span>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-base">갓쇼무라 관광</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Gero+Onsen+Gassho+Village" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                        <p class="text-sm text-brand-lightText mt-1">게로역에서 13:40 버스 탑승 후 이동</p>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-md font-medium mb-2">♨️ 료칸 휴식</span>
+                        <h3 class="font-bold text-base">체크인 & 저녁 가이세키</h3>
+                        <p class="text-sm text-brand-lightText mt-1">료칸 가이세키 저녁 식사 후 온천 및 휴식</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- [4일차] -->
+            <section id="tab-day4" class="tab-content hidden">
+                <div class="flex justify-between items-end mb-5">
+                    <h2 class="text-lg font-bold">11월 16일 (월)</h2>
+                    <span class="text-sm bg-brand-primaryLight text-brand-primary px-3 py-1 rounded-full font-medium">4일차</span>
+                </div>
+                
+                <div class="relative pl-10">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">아침 식사</h3>
+                        <p class="text-sm text-brand-lightText mt-1">료칸 가이세키 조식</p>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚆 기차 이동</span>
+                        <h3 class="font-bold text-base">다카야마로 이동</h3>
+                        <p class="text-sm text-brand-lightText mt-1">게로역 09:27 출발 → 다카야마역 10:16 도착</p>
+
+                        <!-- 기차표 예약정보 (게로 -> 다카야마) -->
+                        <div class="mt-3 bg-white border border-blue-200 rounded-lg p-3 shadow-sm relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2 mb-2 ml-2">
+                                <span class="text-xs font-bold text-gray-700">예약번호 <span class="text-blue-600">43896</span></span>
+                                <span class="text-xs text-gray-500">어른 2명</span>
+                            </div>
+                            <div class="flex justify-between items-center ml-2">
+                                <div>
+                                    <p class="font-bold text-gray-800 text-sm">Hida 1 <span class="text-xs font-normal text-gray-500 bg-gray-100 px-1 py-0.5 rounded ml-1">보통차지정석</span></p>
+                                    <p class="text-sm text-blue-700 font-bold mt-1">3호차 <span class="text-gray-600 text-xs font-normal">7A, 7B</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-base">다카야마 아침시장</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Takayama+Morning+Market" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                        <p class="text-sm text-brand-lightText mt-1">07:00 ~ 12:00 까지 운영. 활기찬 시장 구경.</p>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-rose-100 text-rose-800 text-xs px-2 py-1 rounded-md font-medium mb-2">📸 포토존</span>
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-base">나카바시 다리</h3>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Nakabashi+Bridge+Takayama" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                        <p class="text-sm text-brand-lightText mt-1">빨간 다리를 배경으로 가족 사진 촬영</p>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">점심 식사</h3>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 1.</span> 아지노요헤이 (야끼니꾸, 국물)</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=高山+飛騨牛専門レストラン+味の与平" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 2.</span> 쿄시 (소고기덮밥)</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=創作郷土寿司本舗+梗絲" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">카페 디저트</h3>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 1.</span> 타마유라 (크림박스)</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=たまゆら+高山" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <p class="text-sm"><span class="font-medium text-brand-primary">후보 2.</span> 고마커피 (쿠키컵 커피)</p>
+                                <a href="https://www.google.com/maps/search/?api=1&query=コマコーヒー+高山" target="_blank" class="map-btn">📍 지도</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚆 기차 이동</span>
+                        <h3 class="font-bold text-base">게로로 귀환</h3>
+                        <p class="text-sm text-brand-lightText mt-1">다카야마 15:34 출발 → 게로 16:17 도착</p>
+
+                        <!-- 기차표 예약정보 (다카야마 -> 게로) -->
+                        <div class="mt-3 bg-white border border-blue-200 rounded-lg p-3 shadow-sm relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2 mb-2 ml-2">
+                                <span class="text-xs font-bold text-gray-700">예약번호 <span class="text-blue-600">49672</span></span>
+                                <span class="text-xs text-gray-500">어른 2명</span>
+                            </div>
+                            <div class="flex justify-between items-center ml-2">
+                                <div>
+                                    <p class="font-bold text-gray-800 text-sm">Hida 36 <span class="text-xs font-normal text-gray-500 bg-gray-100 px-1 py-0.5 rounded ml-1">보통차지정석</span></p>
+                                    <p class="text-sm text-blue-700 font-bold mt-1">7호차 <span class="text-gray-600 text-xs font-normal">6A, 6B</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-md font-medium mb-2">♨️ 온천 및 힐링</span>
+                        <h3 class="font-bold text-base">저녁 식사 및 휴식</h3>
+                        <p class="text-sm text-brand-lightText mt-1">료칸 가이세키 및 온천욕</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- [5일차] -->
+            <section id="tab-day5" class="tab-content hidden">
+                <div class="flex justify-between items-end mb-5">
+                    <h2 class="text-lg font-bold">11월 17일 (화)</h2>
+                    <span class="text-sm bg-brand-primaryLight text-brand-primary px-3 py-1 rounded-full font-medium">5일차</span>
+                </div>
+                
+                <div class="relative pl-10">
+                    <div class="timeline-line"></div>
+                    
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">아침 식사</h3>
+                        <p class="text-sm text-brand-lightText mt-1">료칸 조식 (가이세키) 후 체크아웃 준비</p>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <h3 class="font-bold text-base">게로 시내 구경</h3>
+                        <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-100 mt-2 flex justify-between items-center">
+                            <p class="text-sm font-medium">🍢 호테이야 카와구치 (스테이크 꼬치 포장)</p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=ほていや川口+下呂" target="_blank" class="map-btn">📍 지도</a>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚆 기차 이동</span>
+                        <h3 class="font-bold text-base">나고야로 이동</h3>
+                        <p class="text-sm text-brand-lightText mt-1">게로 12:22 출발 → 나고야 14:04 도착</p>
+
+                        <!-- 기차표 예약정보 (게로 -> 나고야) -->
+                        <div class="mt-3 bg-white border border-blue-200 rounded-lg p-3 shadow-sm relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500"></div>
+                            <div class="flex justify-between items-center border-b border-gray-100 pb-2 mb-2 ml-2">
+                                <span class="text-xs font-bold text-gray-700">예약번호 <span class="text-blue-600">49596</span></span>
+                                <span class="text-xs text-gray-500">어른 2명, 어린이 1명</span>
+                            </div>
+                            <div class="flex justify-between items-center ml-2">
+                                <div>
+                                    <p class="font-bold text-gray-800 text-sm">Hida 8 <span class="text-xs font-normal text-gray-500 bg-gray-100 px-1 py-0.5 rounded ml-1">보통차지정석</span></p>
+                                    <p class="text-sm text-blue-700 font-bold mt-1">3호차 <span class="text-gray-600 text-xs font-normal">7A, 7B, 8A</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-md font-medium mb-2">🚆 공항 이동</span>
+                        <h3 class="font-bold text-base">주부공항으로 이동</h3>
+                        <p class="text-sm text-brand-lightText mt-1">나고야 → 주부공항 (뮤스카이/메이테츠 이용)</p>
+                        <a href="https://blog.naver.com/hannnnnnnnnn-/224448461099" target="_blank" class="blog-btn">🔗 공항 이동 방법</a>
+                    </div>
+
+                    <div class="relative mb-6">
+                        <div class="timeline-dot"></div>
+                        <span class="inline-block bg-sky-100 text-sky-800 text-xs px-2 py-1 rounded-md font-medium mb-2">✈️ 귀국 비행</span>
+                        <h3 class="font-bold text-base">집으로 출발</h3>
+                        <p class="text-sm text-brand-lightText mt-1">주부공항 18:20 출발 → 인천공항 20:30 도착</p>
+                        <div class="bg-brand-primaryLight text-brand-primary p-3 rounded-lg mt-3 text-center text-sm font-bold">
+                            즐거운 가족 여행 되세요! 👨‍👩‍👧‍👵
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 홈 화면 추가(앱 설치) 가이드 모달 -->
+        <div id="install-modal" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center p-5 backdrop-blur-sm">
+            <div class="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
+                    <h3 class="text-lg font-bold flex items-center text-brand-text"><span class="mr-2">📱</span> 갤럭시 바탕화면에 깔기</h3>
+                    <button onclick="closeInstallModal()" class="text-gray-400 hover:text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="space-y-4 text-sm text-gray-700">
+                    <p class="font-medium text-brand-primary mb-2">지금 보고 계신 인터넷 창(크롬, 삼성인터넷)에서 아래 순서대로 눌러주세요!</p>
+                    
+                    <div class="flex items-start bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <div class="bg-brand-primary text-white w-6 h-6 rounded-full flex items-center justify-center font-bold mr-3 shrink-0">1</div>
+                        <p>화면 오른쪽 위(또는 아래)에 있는 <strong>[점 3개 메뉴 (⋮) ]</strong> 또는 <strong>[가로줄 3개 (≡)]</strong> 버튼을 누르세요.</p>
+                    </div>
+                    
+                    <div class="flex items-start bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <div class="bg-brand-primary text-white w-6 h-6 rounded-full flex items-center justify-center font-bold mr-3 shrink-0">2</div>
+                        <p>메뉴 목록에서 <strong>'홈 화면에 추가'</strong>를 찾아 누르세요.</p>
+                    </div>
+                    
+                    <div class="flex items-start bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <div class="bg-brand-primary text-white w-6 h-6 rounded-full flex items-center justify-center font-bold mr-3 shrink-0">3</div>
+                        <p><strong>'추가'</strong> 버튼을 누르면 핸드폰 바탕화면에 비행기 모양의 앱 아이콘이 만들어집니다!</p>
+                    </div>
+                </div>
+                
+                <button onclick="closeInstallModal()" class="w-full mt-6 bg-brand-primary text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-sm">
+                    확인했습니다
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for Tab Switching -->
+    <script>
+        function switchTopTab(tabType) {
+            // 상단 탭 버튼 상태 업데이트
+            document.querySelectorAll('.top-tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn-top-' + tabType).classList.add('active');
+
+            const infoSection = document.getElementById('tab-info');
+            const subNav = document.getElementById('sub-nav-schedule');
+            const daySections = document.querySelectorAll('[id^="tab-day"]');
+
+            if (tabType === 'info') {
+                // 기본정보 탭 선택 시
+                infoSection.classList.remove('hidden');
+                subNav.classList.add('hidden');
+                daySections.forEach(section => section.classList.add('hidden'));
+            } else if (tabType === 'schedule') {
+                // 일정 탭 선택 시
+                infoSection.classList.add('hidden');
+                subNav.classList.remove('hidden');
+                
+                // 기존에 선택된 일차가 있으면 유지, 없으면 1일차 표시
+                const activeDayBtn = document.querySelector('.day-tab-btn.active');
+                if (activeDayBtn) {
+                    const dayId = activeDayBtn.id.replace('btn-', '');
+                    switchDayTab(dayId);
+                } else {
+                    switchDayTab('tab-day1');
+                }
+            }
+            scrollToTop();
+        }
+
+        function switchDayTab(tabId) {
+            // 모든 N일차 섹션 숨김
+            const daySections = document.querySelectorAll('[id^="tab-day"]');
+            daySections.forEach(section => section.classList.add('hidden'));
+            
+            // N일차 버튼 상태 초기화
+            const buttons = document.querySelectorAll('.day-tab-btn');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+                button.classList.add('border-gray-200');
+            });
+            
+            // 선택된 섹션 표시
+            const targetContent = document.getElementById(tabId);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+            
+            // 선택된 버튼 활성화
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.classList.remove('border-gray-200');
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+            scrollToTop();
+        }
+
+        function scrollToTop() {
+            const mainContent = document.querySelector('main');
+            if (mainContent) {
+                mainContent.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // 앱 설치 가이드 모달 제어
+        function openInstallModal() {
+            document.getElementById('install-modal').classList.remove('hidden');
+        }
+        
+        function closeInstallModal() {
+            document.getElementById('install-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
